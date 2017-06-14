@@ -7,7 +7,8 @@
 ;
 ; RUN: bugpoint -load %llvmshlibdir/BugpointPasses%shlibext %s -output-prefix %t-notype -bugpoint-crashcalls -silence-passes -disable-namedmd-remove -disable-strip-debuginfo > /dev/null
 ; RUN: llvm-dis %t-notype-reduced-simplified.bc -o - | FileCheck %s --check-prefix=NOTYPE
-;
+; XFAIL: *
+
 ; Bugpoint should keep the call's metadata attached to the call.
 
 ; CHECK: call void @foo(), !dbg ![[LOC:[0-9]+]], !attach ![[CALL:[0-9]+]]
