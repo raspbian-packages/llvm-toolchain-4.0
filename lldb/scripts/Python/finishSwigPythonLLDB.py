@@ -443,7 +443,7 @@ def make_symlink_liblldb(
             if eOSType == utilsOsType.EnumOsType.Darwin:
                 strLibFileExtn = ".dylib"
             else:
-                strLibFileExtn = ".so"
+                strLibFileExtn = "-4.0.so"
             strSrc = os.path.join(vstrLldbLibDir, "liblldb" + strLibFileExtn)
 
     bOk, strErrMsg = make_symlink(
