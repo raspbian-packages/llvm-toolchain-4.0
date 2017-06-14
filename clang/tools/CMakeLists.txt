@@ -18,6 +18,7 @@ endif()
 if(CLANG_ENABLE_STATIC_ANALYZER)
   add_clang_subdirectory(clang-check)
   add_clang_subdirectory(scan-build)
+  add_clang_subdirectory(scan-build-py)
   add_clang_subdirectory(scan-view)
 endif()
 
