@@ -11,3 +11,5 @@ else()
 endif()
 llvm_config(lldb-argdumper ${LLVM_LINK_COMPONENTS})
 
+install(TARGETS lldb-argdumper
+  RUNTIME DESTINATION bin)
