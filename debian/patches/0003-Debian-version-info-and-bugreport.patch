@@ -1,0 +1,17 @@
+---
+ lib/Support/CommandLine.cpp |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+--- a/lib/Support/CommandLine.cpp
++++ b/lib/Support/CommandLine.cpp
+@@ -2046,6 +2046,10 @@ public:
+     OS << " " << LLVM_VERSION_INFO;
+ #endif
+     OS << "\n  ";
++#ifdef LLVM_DEBIAN_INFO
++    OS << LLVM_DEBIAN_INFO;
++#endif
++    OS << "\n  ";
+ #ifndef __OPTIMIZE__
+     OS << "DEBUG build";
+ #else
