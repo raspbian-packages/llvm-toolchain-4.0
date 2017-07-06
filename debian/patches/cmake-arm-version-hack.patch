@@ -1,29 +1,3 @@
-From: Peter Micahel Green <plugwash@raspbian.org>
-Subject: Automatically generated patch (1:4.0.1-1+rpi1)
-
-Last (up to) 3 git changes, FYI:
-
-commit 67c335abb78deb53de96a26ff0f0f5ac8ffaabde
-Author: Peter Michael Green <plugwash@raspbian.org>
-Date:   Thu Jul 6 21:25:21 2017 +0000
-
-    Remove old cmake-arm-version-hack.patch. dgit will regenerate it.
-
-commit 019f07c5de27a04a420eb6889bbe96c9dca246d7
-Merge: d19e83d0b d0f4f4a87
-Author: Peter Michael Green <plugwash@raspbian.org>
-Date:   Thu Jul 6 21:49:03 2017 +0100
-
-    Merge raspbian changes from llvm-toolchain-3.9 packaging.
-
-commit d19e83d0b14cf997e617ffbf125d744d1ac08100
-Merge: b60f1e5d8 301c08848
-Author: root <root@cuboxi4x4.Home>
-Date:   Thu Jul 6 21:39:58 2017 +0100
-
-    Psudeomerge to tie in llvm-toolchain-3.9 upstream history.
----
-
 --- /dev/null
 +++ llvm-toolchain-4.0-4.0.1/cmake/config.guess.hack
 @@ -0,0 +1,2 @@

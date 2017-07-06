@@ -46,4 +46,4 @@ silent-test-failing-codeverage.diff
 silent-amdgpu-test-failing.diff
 pthread-link.diff
 add_symbols_versioning.patch
-auto-1:4.0.1-1+rpi1-67c335abb78deb53de96a26ff0f0f5ac8ffaabde-1499376797
+cmake-arm-version-hack.patch
