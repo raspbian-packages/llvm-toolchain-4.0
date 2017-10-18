@@ -1,0 +1,24 @@
+Description: Link with -latomic when mips* processor is detected
+Author: Gianfranco Costamagna <locutusofborg@debian.org>
+Last-Update: 2016-07-27
+
+---
+ lldb/cmake/LLDBDependencies.cmake |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+--- a/lldb/cmake/LLDBDependencies.cmake
++++ b/lldb/cmake/LLDBDependencies.cmake
+@@ -185,6 +185,13 @@ if (LLVM_BUILD_STATIC)
+   endif()
+ endif()
+ 
++if(CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "mips" OR
++   CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "mipsel" OR
++   CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "mips64el" OR
++   CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "powerpcspe")
++  list(APPEND LLDB_SYSTEM_LIBS atomic)
++endif()
++
+ set(LLVM_LINK_COMPONENTS
+   ${LLVM_TARGETS_TO_BUILD}
+   interpreter
