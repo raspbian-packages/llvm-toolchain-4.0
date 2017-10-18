@@ -5,6 +5,7 @@
 ; RUN: llvm-dis %t.1.5.precodegen.bc -o - | FileCheck --check-prefix=CHECK-BC1 %s
 ; RUN: llvm-nm %t.o0 | FileCheck --check-prefix=CHECK0 %s
 ; RUN: llvm-nm %t.o1 | FileCheck --check-prefix=CHECK1 %s
+; XFAIL: *
 
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"

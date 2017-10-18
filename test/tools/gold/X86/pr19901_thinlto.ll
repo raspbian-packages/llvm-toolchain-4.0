@@ -4,6 +4,7 @@
 ; RUN:     --plugin-opt=thinlto \
 ; RUN:     -shared -m elf_x86_64 -o %t.so %t2.o %t.o
 ; RUN: llvm-readobj -t %t.so | FileCheck %s
+; XFAIL: i686, i386
 
 ; CHECK:       Symbol {
 ; CHECK:         Name: f
