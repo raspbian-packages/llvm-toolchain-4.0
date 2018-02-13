@@ -82,7 +82,7 @@ function(add_llvm_symbol_exports target_name export_file)
     set(native_export_file "${target_name}.exports")
     # FIXME: Don't write the "local:" line on OpenBSD.
     add_custom_command(OUTPUT ${native_export_file}
-      COMMAND echo "{" > ${native_export_file}
+      COMMAND echo "LLVM_4.0 {" > ${native_export_file}
       COMMAND grep -q "[[:alnum:]]" ${export_file} && echo "  global:" >> ${native_export_file} || :
       COMMAND sed -e "s/$/;/" -e "s/^/    /" < ${export_file} >> ${native_export_file}
       COMMAND echo "  local: *;" >> ${native_export_file}
