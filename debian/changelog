@@ -1,4 +1,4 @@
-llvm-toolchain-4.0 (1:4.0.1-8+rpi1) buster-staging; urgency=medium
+llvm-toolchain-4.0 (1:4.0.1-10+rpi1) buster-staging; urgency=medium
 
   [changes brought forward from llvm-toolchain-3.8 1:3.8-2+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Sat, 14 May 2016 21:43:35 +0000]
   * Cleanup .pyc files in clean target.
@@ -17,7 +17,41 @@ llvm-toolchain-4.0 (1:4.0.1-8+rpi1) buster-staging; urgency=medium
   * Clean up clang/tools/scan-build/man/scan-build-3.9.1 and utils/vim/llvm-3.9-vimrc
   * Clean up debian/*.install
 
- -- Raspbian forward porter <root@raspbian.org>  Thu, 26 Oct 2017 17:30:04 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Wed, 21 Feb 2018 07:19:46 +0000
+
+llvm-toolchain-4.0 (1:4.0.1-10) unstable; urgency=medium
+
+  * Ignore the test tools/gold/X86/comdat.ll
+    until https://bugs.llvm.org/show_bug.cgi?id=36166
+    is fixed.
+    Will fix the ftbfs on x86
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Tue, 13 Feb 2018 09:26:55 +0100
+
+llvm-toolchain-4.0 (1:4.0.1-9) unstable; urgency=medium
+
+  * Create clang-tools-4.0 and move the various clang tools into it
+    clang-tools-4.0 depends on clang-4.0. This might affect some packages.
+    (Closes: #836397)
+  * Update of the copyright file (Closes: #878502)
+    Thanks to Nicholas D Steeves for the work
+  * Take a patch for a stack alignment on sparc64 for rust
+    Thanks to John Paul Adrian Glaubitz for the work (Closes: #880221)
+  * Update of the clang description
+  * Standards-Version updated to 4.1.1
+  * Remove some old breaks/replaces/conflicts (<3.8)
+  * Fix some wrong-section-according-to-package-name and
+    priority-extra-is-replaced-by-priority-optional issues
+  * liblld-4.0-dev depends on liblld-4.0 (Closes: #856545)
+  * Use ?= for some variables declarations
+  * Remove the hardcoded declarations of llvm version in debian/rules
+  * add /usr/lib/cuda to the CUDA toolkit search paths
+    Thanks to Andreas Beckmann for the patch (Closes: #882505) (LP: #1706326)
+  * Fix the fix-scan-view-path.diff path (Closes: #885827)
+  * Move libomp-dev from Suggests to Recommends (Closes: #882781)
+  * Do not ship liblld-4.0-dbg for now (Closes: #889269)
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Sun, 11 Feb 2018 00:01:50 +0100
 
 llvm-toolchain-4.0 (1:4.0.1-8) unstable; urgency=medium
 
