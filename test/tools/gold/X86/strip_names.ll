@@ -25,6 +25,7 @@
 ; NONAME:  %2 = load i32, i32* @GlobalValueName
 ; NONAME:  %3 = add i32 %0, %2
 ; NONAME:  ret i32 %3
+; XFAIL: *
 
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"

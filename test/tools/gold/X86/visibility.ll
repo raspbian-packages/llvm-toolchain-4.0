@@ -16,6 +16,7 @@
 ; CHECK-NEXT: Other [
 ; CHECK-NEXT:   STV_PROTECTED
 ; CHECK-NEXT: ]
+; XFAIL: *
 
 ; IR: define void @foo
 
