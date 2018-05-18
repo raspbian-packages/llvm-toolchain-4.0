@@ -1,0 +1,16 @@
+---
+ clang/lib/Driver/ToolChains.cpp |    2 ++
+ 1 file changed, 2 insertions(+)
+
+Index: llvm-toolchain-4.0-4.0~+rc2/clang/lib/Driver/ToolChains.cpp
+===================================================================
+--- llvm-toolchain-4.0-4.0~+rc2.orig/clang/lib/Driver/ToolChains.cpp
++++ llvm-toolchain-4.0-4.0~+rc2/clang/lib/Driver/ToolChains.cpp
+@@ -2952,6 +2952,7 @@ void Generic_GCC::AddClangCXXStdlibInclu
+     addLibStdCxxIncludePaths(DriverArgs, CC1Args);
+     break;
+   }
++  addSystemInclude(DriverArgs, CC1Args, "/usr/include/clang/" + std::string(CLANG_VERSION_STRING) + "/include/");
+ }
+ 
+ std::string Generic_GCC::findLibCxxIncludePath() const {

@@ -1,0 +1,80 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ # See docs/CMake.html for instructions about how to build LLVM with CMake.
+ 
+-cmake_minimum_required(VERSION 3.4.3)
++cmake_minimum_required(VERSION 3.0)
+ 
+ if(POLICY CMP0022)
+   cmake_policy(SET CMP0022 NEW) # automatic when 2.8.12 is required
+--- a/lld/CMakeLists.txt
++++ b/lld/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ # Check if lld is built as a standalone project.
+ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+   project(lld)
+-  cmake_minimum_required(VERSION 3.4.3)
++  cmake_minimum_required(VERSION 3.0)
+ 
+   set(CMAKE_INCLUDE_CURRENT_DIR ON)
+   set(LLD_BUILT_STANDALONE TRUE)
+--- a/lldb/CMakeLists.txt
++++ b/lldb/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 3.4.3)
++cmake_minimum_required(VERSION 3.0)
+ 
+ include(cmake/modules/LLDBStandalone.cmake)
+ include(cmake/modules/LLDBConfig.cmake)
+--- a/runtimes/CMakeLists.txt
++++ b/runtimes/CMakeLists.txt
+@@ -23,7 +23,7 @@
+     set_property(GLOBAL APPEND PROPERTY SUB_COMPONENTS ${name})
+   endfunction()
+ 
+-  cmake_minimum_required(VERSION 3.4.3)
++  cmake_minimum_required(VERSION 3.0)
+ 
+   # Add the root project's CMake modules, and the LLVM build's modules to the
+   # CMake module path.
+--- a/clang/CMakeLists.txt
++++ b/clang/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 3.4.3)
++cmake_minimum_required(VERSION 3.0)
+ 
+ # If we are not building as a part of LLVM, build Clang as an
+ # standalone project, using LLVM as an external library:
+--- a/clang/tools/scan-build-py/tests/functional/exec/CMakeLists.txt
++++ b/clang/tools/scan-build-py/tests/functional/exec/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ project(exec C)
+ 
+-cmake_minimum_required(VERSION 3.4.3)
++cmake_minimum_required(VERSION 3.0)
+ 
+ include(CheckCCompilerFlag)
+ check_c_compiler_flag("-std=c99" C99_SUPPORTED)
+--- a/compiler-rt/CMakeLists.txt
++++ b/compiler-rt/CMakeLists.txt
+@@ -13,7 +13,7 @@
+   set(COMPILER_RT_STANDALONE_BUILD TRUE)
+ endif()
+ 
+-cmake_minimum_required(VERSION 3.4.3)
++cmake_minimum_required(VERSION 3.0)
+ # FIXME:
+ # The OLD behavior (pre 3.2) for this policy is to not set the value of the 
+ # CMAKE_EXE_LINKER_FLAGS variable in the generated test project. The NEW behavior
+--- a/compiler-rt/lib/builtins/CMakeLists.txt
++++ b/compiler-rt/lib/builtins/CMakeLists.txt
+@@ -3,7 +3,7 @@
+ # architecture-specific code in various subdirectories.
+ 
+ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+-  cmake_minimum_required(VERSION 3.4.3)
++  cmake_minimum_required(VERSION 3.0)
+ 
+   project(CompilerRTBuiltins C ASM)
+   set(COMPILER_RT_STANDALONE_BUILD TRUE)

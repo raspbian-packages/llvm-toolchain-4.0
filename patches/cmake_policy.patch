@@ -1,0 +1,11 @@
+--- a/compiler-rt/CMakeLists.txt
++++ b/compiler-rt/CMakeLists.txt
+@@ -23,7 +23,7 @@
+ # projects/compiler-rt/cmake/Modules/CompilerRTUtils.cmake:121 such that
+ # CAN_TARGET_${arch} is not set properly. This results in COMPILER_RT_SUPPORTED_ARCH
+ # not being updated properly leading to poblems.
+-cmake_policy(SET CMP0056 OLD)
++#cmake_policy(SET CMP0056 OLD)
+ 
+ # Add path for custom compiler-rt modules.
+ list(INSERT CMAKE_MODULE_PATH 0

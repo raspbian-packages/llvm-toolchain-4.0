@@ -1,0 +1,159 @@
+--- a/cmake/modules/AddLLVM.cmake
++++ b/cmake/modules/AddLLVM.cmake
+@@ -585,7 +585,8 @@
+         set(install_type ARCHIVE)
+       endif()
+ 
+-      if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
++      list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
++      if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
+           NOT LLVM_DISTRIBUTION_COMPONENTS)
+         set(export_to_llvmexports EXPORT LLVMExports)
+         set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
+@@ -626,7 +627,8 @@
+           set(dlldir "lib${LLVM_LIBDIR_SUFFIX}")
+         endif()
+ 
+-        if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
++        list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
++        if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
+             NOT LLVM_DISTRIBUTION_COMPONENTS)
+           set(export_to_llvmexports EXPORT LLVMExports)
+           set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
+@@ -813,9 +815,11 @@
+   endif()
+   add_llvm_executable(${name} ${ARGN})
+ 
+-  if ( ${name} IN_LIST LLVM_TOOLCHAIN_TOOLS OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
++  list(FIND LLVM_TOOLCHAIN_TOOLS ${name} LLVM_IS_${name}_TOOLCHAIN_TOOL)
++  if (LLVM_IS_${name}_TOOLCHAIN_TOOL GREATER -1 OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
+     if( LLVM_BUILD_TOOLS )
+-      if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
++      list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
++      if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
+           NOT LLVM_DISTRIBUTION_COMPONENTS)
+         set(export_to_llvmexports EXPORT LLVMExports)
+         set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
+@@ -1371,7 +1375,9 @@
+     set_target_properties(${target_name} PROPERTIES FOLDER Tools)
+ 
+     # Make sure both the link and target are toolchain tools
+-    if (${link_name} IN_LIST LLVM_TOOLCHAIN_TOOLS AND ${target} IN_LIST LLVM_TOOLCHAIN_TOOLS)
++    list(FIND LLVM_TOOLCHAIN_TOOLS ${link_name} LLVM_IS_${link_name}_TOOLCHAIN_TOOL)
++    list(FIND LLVM_TOOLCHAIN_TOOLS ${target} LLVM_IS_${target}_TOOLCHAIN_TOOL)
++    if (LLVM_IS_${link_name}_TOOLCHAIN_TOOL GREATER -1 AND LLVM_IS_${target}_TOOLCHAIN_TOOL GREATER -1)
+       set(TOOL_IS_TOOLCHAIN ON)
+     endif()
+ 
+@@ -1446,7 +1452,8 @@
+     return()
+   endif()
+ 
+-  if("intrinsics_gen" IN_LIST ARGN)
++  list(FIND ARGN "intrinsics_gen" LLVM_IS_intrinsics_gen_ARGN)
++  if (LLVM_IS_intrinsics_gen_ARGN GREATER -1)
+     return()
+   endif()
+ 
+--- a/clang/cmake/modules/AddClang.cmake
++++ b/clang/cmake/modules/AddClang.cmake
+@@ -90,7 +90,8 @@
+ 
+     if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY OR ${name} STREQUAL "libclang")
+ 
+-      if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
++      list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
++      if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
+           NOT LLVM_DISTRIBUTION_COMPONENTS)
+         set(export_to_clangtargets EXPORT ClangTargets)
+         set_property(GLOBAL PROPERTY CLANG_HAS_EXPORTS True)
+@@ -135,7 +136,8 @@
+   add_clang_executable(${name} ${ARGN})
+ 
+   if (CLANG_BUILD_TOOLS)
+-    if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
++    list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
++    if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
+         NOT LLVM_DISTRIBUTION_COMPONENTS)
+       set(export_to_clangtargets EXPORT ClangTargets)
+       set_property(GLOBAL PROPERTY CLANG_HAS_EXPORTS True)
+--- a/lld/cmake/modules/AddLLD.cmake
++++ b/lld/cmake/modules/AddLLD.cmake
+@@ -11,7 +11,8 @@
+   set_target_properties(${name} PROPERTIES FOLDER "lld libraries")
+ 
+   if (LLD_BUILD_TOOLS)
+-    if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
++    list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
++    if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
+         NOT LLVM_DISTRIBUTION_COMPONENTS)
+       set(export_to_lldtargets EXPORT lldTargets)
+       set_property(GLOBAL PROPERTY LLD_HAS_EXPORTS True)
+@@ -48,7 +49,8 @@
+   add_lld_executable(${name} ${ARGN})
+ 
+   if (LLD_BUILD_TOOLS)
+-    if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
++    list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
++    if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
+         NOT LLVM_DISTRIBUTION_COMPONENTS)
+       set(export_to_lldtargets EXPORT lldTargets)
+       set_property(GLOBAL PROPERTY LLD_HAS_EXPORTS True)
+--- a/cmake/modules/CMakeLists.txt
++++ b/cmake/modules/CMakeLists.txt
+@@ -25,7 +25,8 @@
+ # projects building out of tree will have CMake errors. This only gets hit when
+ # LLVM_ENABLE_MODULES=On. Eventually we should come up with a better solution to
+ # this, but there is no easy solution.
+-if(intrinsics_gen IN_LIST LLVM_COMMON_DEPENDS)
++list(FIND LLVM_COMMON_DEPENDS "intrinsics_gen" LLVM_IS_intrinsics_gen_LLVM_COMMON_DEPEND)
++if (LLVM_IS_intrinsics_gen_LLVM_COMMON_DEPEND GREATER -1)
+   list(REMOVE_ITEM LLVM_COMMON_DEPENDS intrinsics_gen)
+ endif()
+ 
+--- a/cmake/modules/LLVMExternalProjectUtils.cmake
++++ b/cmake/modules/LLVMExternalProjectUtils.cmake
+@@ -107,10 +107,12 @@
+       set(compiler_args -DCMAKE_C_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang
+                         -DCMAKE_CXX_COMPILER=${LLVM_RUNTIME_OUTPUT_INTDIR}/clang++)
+     endif()
+-    if(llvm-ar IN_LIST TOOLCHAIN_TOOLS)
++    list(FIND TOOLCHAIN_TOOLS llvm-ar LLVM_IS_llvm-ar_TOOLCHAIN_TOOL)
++    if (LLVM_IS_llvm-ar_TOOLCHAIN_TOOL GREATER -1)
+       list(APPEND compiler_args -DCMAKE_AR=${LLVM_RUNTIME_OUTPUT_INTDIR}/llvm-ar)
+     endif()
+-    if(llvm-ranlib IN_LIST TOOLCHAIN_TOOLS)
++    list(FIND TOOLCHAIN_TOOLS llvm-ranlib LLVM_IS_llvm-ranlib_TOOLCHAIN_TOOL)
++    if (LLVM_IS_llvm-ranlib_TOOLCHAIN_TOOL GREATER -1)
+       list(APPEND compiler_args -DCMAKE_RANLIB=${LLVM_RUNTIME_OUTPUT_INTDIR}/llvm-ranlib)
+     endif()
+     list(APPEND ARG_DEPENDS ${TOOLCHAIN_TOOLS})
+--- a/cmake/modules/TableGen.cmake
++++ b/cmake/modules/TableGen.cmake
+@@ -135,7 +135,8 @@
+   endif()
+ 
+   if (${project} STREQUAL LLVM AND NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
+-    if(${target} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
++    list(FIND LLVM_DISTRIBUTION_COMPONENTS ${target} LLVM_IS_${target}_DISTRIBUTION_COMPONENT)
++    if (LLVM_IS_${target}_DISTRIBUTION_COMPONENT GREATER -1 OR
+         NOT LLVM_DISTRIBUTION_COMPONENTS)
+       set(export_to_llvmexports EXPORT LLVMExports)
+     endif()
+--- a/lldb/unittests/UnwindAssembly/CMakeLists.txt
++++ b/lldb/unittests/UnwindAssembly/CMakeLists.txt
+@@ -1,4 +1,5 @@
+-if ("X86" IN_LIST LLVM_TARGETS_TO_BUILD)
++list(FIND LLVM_TARGETS_TO_BUILD "X86" LLVM_IS_X86_TARGET_TO_BUILD)
++if (LLVM_IS_X86_TARGET_TO_BUILD GREATER -1)
+   add_subdirectory(x86)
+ endif()
+ 
+--- a/lldb/unittests/UnwindAssembly/InstEmulation/CMakeLists.txt
++++ b/lldb/unittests/UnwindAssembly/InstEmulation/CMakeLists.txt
+@@ -1,3 +1,4 @@
+-if ("AArch64" IN_LIST LLVM_TARGETS_TO_BUILD)
++list(FIND LLVM_TARGETS_TO_BUILD "AArch64" LLVM_IS_AArch64_TARGET_TO_BUILD)
++if (LLVM_IS_AArch64_TARGET_TO_BUILD GREATER -1)
+   add_lldb_unittest(InstEmulationTests TestArm64InstEmulation.cpp)
+ endif()
