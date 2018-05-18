@@ -11,7 +11,8 @@ macro(add_lld_library name)
   set_target_properties(${name} PROPERTIES FOLDER "lld libraries")
 
   if (LLD_BUILD_TOOLS)
-    if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
+    list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
+    if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
         NOT LLVM_DISTRIBUTION_COMPONENTS)
       set(export_to_lldtargets EXPORT lldTargets)
       set_property(GLOBAL PROPERTY LLD_HAS_EXPORTS True)
@@ -48,7 +49,8 @@ macro(add_lld_tool name)
   add_lld_executable(${name} ${ARGN})
 
   if (LLD_BUILD_TOOLS)
-    if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
+    list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
+    if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
         NOT LLVM_DISTRIBUTION_COMPONENTS)
       set(export_to_lldtargets EXPORT lldTargets)
       set_property(GLOBAL PROPERTY LLD_HAS_EXPORTS True)

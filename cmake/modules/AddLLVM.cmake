@@ -585,7 +585,8 @@ macro(add_llvm_library name)
         set(install_type ARCHIVE)
       endif()
 
-      if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
+      list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
+      if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
           NOT LLVM_DISTRIBUTION_COMPONENTS)
         set(export_to_llvmexports EXPORT LLVMExports)
         set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
@@ -626,7 +627,8 @@ macro(add_llvm_loadable_module name)
           set(dlldir "lib${LLVM_LIBDIR_SUFFIX}")
         endif()
 
-        if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
+        list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
+        if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
             NOT LLVM_DISTRIBUTION_COMPONENTS)
           set(export_to_llvmexports EXPORT LLVMExports)
           set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
@@ -813,9 +815,11 @@ macro(add_llvm_tool name)
   endif()
   add_llvm_executable(${name} ${ARGN})
 
-  if ( ${name} IN_LIST LLVM_TOOLCHAIN_TOOLS OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
+  list(FIND LLVM_TOOLCHAIN_TOOLS ${name} LLVM_IS_${name}_TOOLCHAIN_TOOL)
+  if (LLVM_IS_${name}_TOOLCHAIN_TOOL GREATER -1 OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
     if( LLVM_BUILD_TOOLS )
-      if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
+      list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
+      if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
           NOT LLVM_DISTRIBUTION_COMPONENTS)
         set(export_to_llvmexports EXPORT LLVMExports)
         set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
@@ -1371,7 +1375,9 @@ function(add_llvm_tool_symlink link_name target)
     set_target_properties(${target_name} PROPERTIES FOLDER Tools)
 
     # Make sure both the link and target are toolchain tools
-    if (${link_name} IN_LIST LLVM_TOOLCHAIN_TOOLS AND ${target} IN_LIST LLVM_TOOLCHAIN_TOOLS)
+    list(FIND LLVM_TOOLCHAIN_TOOLS ${link_name} LLVM_IS_${link_name}_TOOLCHAIN_TOOL)
+    list(FIND LLVM_TOOLCHAIN_TOOLS ${target} LLVM_IS_${target}_TOOLCHAIN_TOOL)
+    if (LLVM_IS_${link_name}_TOOLCHAIN_TOOL GREATER -1 AND LLVM_IS_${target}_TOOLCHAIN_TOOL GREATER -1)
       set(TOOL_IS_TOOLCHAIN ON)
     endif()
 
@@ -1446,7 +1452,8 @@ function(setup_dependency_debugging name)
     return()
   endif()
 
-  if("intrinsics_gen" IN_LIST ARGN)
+  list(FIND ARGN "intrinsics_gen" LLVM_IS_intrinsics_gen_ARGN)
+  if (LLVM_IS_intrinsics_gen_ARGN GREATER -1)
     return()
   endif()
 

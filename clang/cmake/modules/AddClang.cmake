@@ -90,7 +90,8 @@ macro(add_clang_library name)
 
     if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY OR ${name} STREQUAL "libclang")
 
-      if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
+      list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
+      if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
           NOT LLVM_DISTRIBUTION_COMPONENTS)
         set(export_to_clangtargets EXPORT ClangTargets)
         set_property(GLOBAL PROPERTY CLANG_HAS_EXPORTS True)
@@ -135,7 +136,8 @@ macro(add_clang_tool name)
   add_clang_executable(${name} ${ARGN})
 
   if (CLANG_BUILD_TOOLS)
-    if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
+    list(FIND LLVM_DISTRIBUTION_COMPONENTS ${name} LLVM_IS_${name}_DISTRIBUTION_COMPONENT)
+    if (LLVM_IS_${name}_DISTRIBUTION_COMPONENT GREATER -1 OR
         NOT LLVM_DISTRIBUTION_COMPONENTS)
       set(export_to_clangtargets EXPORT ClangTargets)
       set_property(GLOBAL PROPERTY CLANG_HAS_EXPORTS True)
