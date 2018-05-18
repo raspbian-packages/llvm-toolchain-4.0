@@ -1,0 +1,18 @@
+---
+ clang/lib/Driver/Tools.cpp |    5 -----
+ 1 file changed, 5 deletions(-)
+
+--- a/clang/lib/Driver/Tools.cpp
++++ b/clang/lib/Driver/Tools.cpp
+@@ -7876,11 +7876,6 @@ bool mips::isFP64ADefault(const llvm::Tr
+ 
+ bool mips::isFPXXDefault(const llvm::Triple &Triple, StringRef CPUName,
+                          StringRef ABIName, mips::FloatABI FloatABI) {
+-  if (Triple.getVendor() != llvm::Triple::ImaginationTechnologies &&
+-      Triple.getVendor() != llvm::Triple::MipsTechnologies &&
+-      !Triple.isAndroid())
+-    return false;
+-
+   if (ABIName != "32")
+     return false;
+ 

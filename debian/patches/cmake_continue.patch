@@ -1,0 +1,85 @@
+--- a/cmake/modules/AddLLVM.cmake
++++ b/cmake/modules/AddLLVM.cmake
+@@ -1212,27 +1212,24 @@
+     # in a directory called Inputs contains tests.
+     file(GLOB_RECURSE to_process LIST_DIRECTORIES true ${directory}/*)
+     foreach(lit_suite ${to_process})
+-      if(NOT IS_DIRECTORY ${lit_suite})
+-        continue()
+-      endif()
+-      string(FIND ${lit_suite} Inputs is_inputs)
+-      string(FIND ${lit_suite} Output is_output)
+-      if (NOT (is_inputs EQUAL -1 AND is_output EQUAL -1))
+-        continue()
+-      endif()
+-
+-      # Create a check- target for the directory.
+-      string(REPLACE ${directory} "" name_slash ${lit_suite})
+-      if (name_slash)
+-        string(REPLACE "/" "-" name_slash ${name_slash})
+-        string(REPLACE "\\" "-" name_dashes ${name_slash})
+-        string(TOLOWER "${project}${name_dashes}" name_var)
+-        add_lit_target("check-${name_var}" "Running lit suite ${lit_suite}"
+-          ${lit_suite}
+-          PARAMS ${ARG_PARAMS}
+-          DEPENDS ${ARG_DEPENDS}
+-          ARGS ${ARG_ARGS}
+-        )
++      if(IS_DIRECTORY ${lit_suite})
++        string(FIND ${lit_suite} Inputs is_inputs)
++        string(FIND ${lit_suite} Output is_output)
++        if (is_inputs EQUAL -1 AND is_output EQUAL -1)
++          # Create a check- target for the directory.
++          string(REPLACE ${directory} "" name_slash ${lit_suite})
++          if (name_slash)
++            string(REPLACE "/" "-" name_slash ${name_slash})
++            string(REPLACE "\\" "-" name_dashes ${name_slash})
++            string(TOLOWER "${project}${name_dashes}" name_var)
++            add_lit_target("check-${name_var}" "Running lit suite ${lit_suite}"
++              ${lit_suite}
++              PARAMS ${ARG_PARAMS}
++              DEPENDS ${ARG_DEPENDS}
++              ARGS ${ARG_ARGS}
++            )
++          endif()
++        endif()
+       endif()
+     endforeach()
+   endif()
+--- a/compiler-rt/cmake/Modules/BuiltinTests.cmake
++++ b/compiler-rt/cmake/Modules/BuiltinTests.cmake
+@@ -52,11 +52,10 @@
+   CHECK_COMPILER_FLAG_COMMON_PATTERNS(_CheckCCompilerFlag_COMMON_PATTERNS)
+   set(ERRORS_FOUND OFF)
+   foreach(var ${_CheckCCompilerFlag_COMMON_PATTERNS})
+-    if("${var}" STREQUAL "FAIL_REGEX")
+-      continue()
+-    endif()
+-    if("${TEST_ERROR}" MATCHES "${var}" OR "${TEST_OUTPUT}" MATCHES "${var}")
+-      set(ERRORS_FOUND ON)
++    if(NOT ("${var}" STREQUAL "FAIL_REGEX"))
++      if("${TEST_ERROR}" MATCHES "${var}" OR "${TEST_OUTPUT}" MATCHES "${var}")
++        set(ERRORS_FOUND ON)
++      endif()
+     endif()
+   endforeach()
+ 
+--- a/runtimes/CMakeLists.txt
++++ b/runtimes/CMakeLists.txt
+@@ -123,14 +123,9 @@
+     foreach(component ${SUB_COMPONENTS})
+       if(NOT TARGET ${component})
+         message(SEND_ERROR "Missing target for runtime component ${component}!")
+-        continue()
+-      endif()
+-      if(LLVM_INCLUDE_TESTS AND NOT TARGET check-${component})
++      elseif(LLVM_INCLUDE_TESTS AND NOT TARGET check-${component})
+         message(SEND_ERROR "Missing check target for runtime component ${component}!")
+-        continue()
+-      endif()
+-
+-      if(TARGET install-${component})
++      elseif(TARGET install-${component})
+         list(APPEND SUB_INSTALL_TARGETS install-${component})
+       endif()
+     endforeach()
