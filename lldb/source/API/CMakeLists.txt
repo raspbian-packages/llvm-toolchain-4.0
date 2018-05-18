@@ -16,7 +16,12 @@ if (LLDB_BUILD_FRAMEWORK AND NOT APPLE)
   message(FATAL_ERROR "LLDB.framework cannot be generated unless targeting Apple platforms.")
 endif()
 
-add_lldb_library(liblldb SHARED
+set(output_name lldb)
+if (CMAKE_SYSTEM_NAME MATCHES "Windows")
+  set(output_name liblldb)
+endif()
+
+add_lldb_library(liblldb SHARED OUTPUT_NAME ${output_name} SONAME
   SBAddress.cpp
   SBAttachInfo.cpp
   SBBlock.cpp
@@ -99,7 +104,7 @@ target_link_libraries(liblldb PRIVATE
 
 set_target_properties(liblldb
   PROPERTIES
-  VERSION ${LLDB_VERSION}
+  VERSION 1
   )
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -123,11 +128,6 @@ if ( CMAKE_SYSTEM_NAME MATCHES "Windows" )
   if (MSVC AND NOT LLDB_DISABLE_PYTHON)
     target_link_libraries(liblldb PRIVATE ${PYTHON_LIBRARY})
   endif()
-else()
-  set_target_properties(liblldb
-    PROPERTIES
-    OUTPUT_NAME lldb
-    )
 endif()
 
 if (LLDB_WRAP_PYTHON)
