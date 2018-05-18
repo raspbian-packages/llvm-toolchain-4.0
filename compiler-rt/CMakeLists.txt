@@ -13,7 +13,7 @@ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR OR COMPILER_RT_STANDALONE
   set(COMPILER_RT_STANDALONE_BUILD TRUE)
 endif()
 
-cmake_minimum_required(VERSION 3.4.3)
+cmake_minimum_required(VERSION 3.0)
 # FIXME:
 # The OLD behavior (pre 3.2) for this policy is to not set the value of the 
 # CMAKE_EXE_LINKER_FLAGS variable in the generated test project. The NEW behavior
