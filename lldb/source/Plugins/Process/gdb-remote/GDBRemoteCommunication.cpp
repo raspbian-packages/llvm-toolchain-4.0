@@ -32,6 +32,7 @@
 #include "lldb/Target/Process.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/Support/ScopedPrinter.h"
+#include "llvm/Config/llvm-config.h"
 
 // Project includes
 #include "ProcessGDBRemoteLog.h"
@@ -39,7 +40,7 @@
 #if defined(__APPLE__)
 #define DEBUGSERVER_BASENAME "debugserver"
 #else
-#define DEBUGSERVER_BASENAME "lldb-server"
+# define DEBUGSERVER_BASENAME    "lldb-server-"LLVM_VERSION_STRING
 #endif
 
 #if defined(HAVE_LIBCOMPRESSION)
