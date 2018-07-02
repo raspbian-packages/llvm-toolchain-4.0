@@ -5,6 +5,7 @@
 ; RUN:  -plugin-opt=save-temps
 ; RUN: FileCheck --check-prefix=RES %s < %t3.o.resolution.txt
 ; RUN: llvm-readobj -t %t3.o | FileCheck --check-prefix=OBJ %s
+; XFAIL: *
 
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"
