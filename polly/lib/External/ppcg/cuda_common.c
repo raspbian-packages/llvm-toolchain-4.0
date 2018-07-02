@@ -15,6 +15,11 @@
 #include "cuda_common.h"
 #include "ppcg.h"
 
+// For GNU Hurd
+#if defined(__GNU__) && !defined(PATH_MAX)
+# define PATH_MAX 4096
+#endif
+
 /* Open the host .cu file and the kernel .hu and .cu files for writing.
  * Add the necessary includes.
  */
