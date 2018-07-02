@@ -194,3 +194,7 @@ endif()
 target_link_libraries(lldb-server ${LLDB_SYSTEM_LIBS})
 
 set_target_properties(lldb-server PROPERTIES VERSION ${LLDB_VERSION})
+
+install(TARGETS lldb-server
+  RUNTIME DESTINATION bin)
+
