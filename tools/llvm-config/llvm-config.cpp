@@ -555,9 +555,9 @@ int main(int argc, char **argv) {
       } else if (Arg == "--shared-mode") {
         PrintSharedMode = true;
       } else if (Arg == "--obj-root") {
-        OS << ActivePrefix << '\n';
+        OS << ActivePrefix << "/build/" << '\n';
       } else if (Arg == "--src-root") {
-        OS << LLVM_SRC_ROOT << '\n';
+        OS << ActivePrefix << "/build/" << '\n';
       } else if (Arg == "--ignore-libllvm") {
         LinkDyLib = false;
         LinkMode = BuiltSharedLibs ? LinkModeShared : LinkModeAuto;
