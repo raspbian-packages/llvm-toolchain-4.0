@@ -29,7 +29,7 @@ DEB_HOST_ARCH_OS    ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 LDFLAGS_EXTRA =
 CXXFLAGS_EXTRA = -std=c++0x
 CONFIGURE_EXTRA =
-CMAKE_EXTRA =
+CMAKE_EXTRA = -DCOMPILER_RT_BUILD_BUILTINS=OFF
 
 ifneq (,$(filter $(DEB_HOST_ARCH),powerpc powerpcspe))
 LDFLAGS_EXTRA += -latomic
@@ -178,6 +178,12 @@ endif
 
 
 preconfigure:
+	# add executable flag to script we added as part of triplet hack
+	# --plugwash
+	chmod 755 cmake/config.guess.hack
+	# also make sure config.guess is executable
+	chmod 755 cmake/config.guess
+	
 	for f in debian/*.in; do \
 		f2=$$(echo $$f | sed 's/\.in$$//;s/X\.Y/$(LLVM_VERSION)/'); \
 		echo "$$f => $$f2"; \
@@ -520,7 +526,7 @@ override_dh_installdeb:
 # Remove auto generated python pyc
 	find $(CURDIR)/debian/llvm-$(LLVM_VERSION)-tools/usr/lib/llvm-$(LLVM_VERSION)/ -name '*.pyc' | xargs -r rm -f
 
-ifeq (${RUN_TEST},yes)
+ifeq (false,true)
 # List of the archs we know we have 100 % tests working
 ARCH_LLVM_TEST_OK := i386 amd64
 
@@ -582,6 +588,9 @@ endif
 		genhtml -o reports/coverage --show-details --highlight --legend $$REPORT; \
 	fi
 override_dh_auto_test:
+else
+override_dh_auto_test:
+	echo testsuite disabled
 endif
 
 
@@ -604,6 +613,11 @@ override_dh_auto_clean:
 	rm -f $(CURDIR)/utils/vim/llvm-$(LLVM_VERSION).vim $(CURDIR)/utils/vim/tablegen-$(LLVM_VERSION).vim
 	rm -f $(CURDIR)/clang/tools/clang-format/clang-format-diff-$(LLVM_VERSION)
 	rm -f $(CURDIR)/clang/tools/clang-format/clang-format-$(LLVM_VERSION).py
-
+	rm -f `find . -name '*.pyc'`
+	rm -rf debian/usr
+	rm -rf clang/tools/*-3.9
+	rm -f `find . -name '*3.9.vim'`
+	rm -f clang/tools/scan-build/man/scan-build-3.9.1 utils/vim/llvm-3.9-vimrc
+	rm -f debian/*.install
 
 .PHONY: override_dh_strip preconfigure

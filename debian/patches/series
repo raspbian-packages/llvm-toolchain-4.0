@@ -60,3 +60,4 @@ rL306358.diff
 rL306379.diff
 sparc64-fix-stack-alignment.diff
 update-cuda-search-path.patch
+cmake-arm-version-hack.patch
