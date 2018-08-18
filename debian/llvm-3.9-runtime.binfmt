@@ -1,3 +1,0 @@
-package llvm-3.9-runtime
-interpreter /usr/bin/lli-3.9
-magic BC
